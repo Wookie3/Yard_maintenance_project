@@ -2,10 +2,9 @@
 YorkU Full-stack project
 
 ## About the app
-This site is based around lawn and garden maintenance.  After arriving at the home page the user would choose one of the three options.
-This site would be geared towards one maintenance company but could expand to work with multiple companies. The site serves two main purposes;  taking the hassle out of getting landscape work done and being able to better customize what days the maintenance crews work.
+This app is based around lawn and garden maintenance.  The app serves two main purposes;  making it easy to get landscape work done and being able to better customize what days the maintenance is carried out.
 
-Scheduled maintenance will open to a scheduling page where a user can see upcoming maintenance and/or the availability of a crew to come additional days. I plan to have a customized calendar showing this for the user to see once they have logged into the page.  Specialized maintenance will include options like flower planting, annual seasonal maintenance, mulching, edging and sprinkler installation.  The final option is in order to fill out a contact us form with some options selected or a brief description of the design the client would be looking for. 
+Scheduled Maintenance will open to a scheduling page where a user can see upcoming maintenance and/or the availability of a crew to come additional days.  I plan to have a customized calendar showing this for the user to see once they have logged into the page.  Specialized Maintenance will include options to select such as flower planting, mulching and seasonal services like winterizing.  Landscape Design will be a form for the client to fill out with some options to select and/or a brief description of the design they are looking for. 
 
 ## User Stories:
 
