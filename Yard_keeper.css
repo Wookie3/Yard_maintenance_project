@@ -262,7 +262,7 @@ body{
     }
 }
 
-@media only screen and (max-width: 499px) {
+@media only screen and (max-width: 500px) {
     .navbar-img{
         padding: 0 20px 0 0;
     }
