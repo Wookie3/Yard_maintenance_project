@@ -16,10 +16,6 @@ CREATE TABLE yard_keeper.users(
     user_password VARCHAR(18)
 );
 
--- INSERT INTO yard_keeper.users(user_name, user_password, location_id)
--- 	VALUES
--- 		('New City Mall', 'super_password', '001'),
---         ('Building Inc.', 'pass_word', '002');
 
 CREATE TABLE yard_keeper.locations(
 	location_id INT PRIMARY KEY UNIQUE,
