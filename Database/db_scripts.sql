@@ -137,6 +137,15 @@ INSERT INTO staff(first_name, last_name, is_crew_lead, is_admin)
 UPDATE staff SET is_crew_lead = 1 WHERE staff_id = 13;
 SELECT * FROM staff;
 
+-- delete a staff member
+DELETE FROM staff WHERE staff_id = 15;
+SELECT * FROM staff;
+
+-- delete a sign out log then roll it back
+START TRANSACTION;
+DELETE FROM sign_out WHERE log_id = 304;
+SELECT * FROM sign_out ;
+ROLLBACK;
 
 
 EXPLAIN  SELECT * FROM tasks;
