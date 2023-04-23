@@ -18,8 +18,10 @@ INSERT INTO yard_keeper.sign_out(item_id, time_out, time_in, staff_id)
         (2003, current_timestamp(), DEFAULT, 12)
 	;
 UPDATE items SET is_out = 1 WHERE item_id IN (2001, 2002, 2003);
+
 SELECT * from sign_out;
 SELECT * FROM items;
+
 -- sign in an item
 UPDATE items SET is_out = 0 WHERE item_id = 2003;
 UPDATE sign_out SET time_in = current_timestamp() WHERE log_id = 304;
@@ -28,18 +30,26 @@ SELECT * FROM items;
 
 -- see all item that are signed out:
 SELECT item_id AS ID, item_type AS 'Type', time_updated AS 'Last Updated' 
-FROM items WHERE is_out;
+FROM items WHERE is_out
+;
+
 -- see who has what signed out currently
 SELECT so.item_id AS 'Item ID',time_out AS 'Signed Out', time_in AS 'Signed In', s.first_name AS 'First' , s.last_name AS 'Last' , s.staff_id AS 'Staff ID'
 	FROM sign_out AS so
-    JOIN staff AS s ON so.staff_id = s.staff_id WHERE time_in IS NOT NULL;
+    JOIN staff AS s ON so.staff_id = s.staff_id WHERE time_in IS NOT NULL
+    ;
     
     
--- creating a view
+-- creating a view; join 3 tables to show item type, when item was signed out and by what staff.
+DROP VIEW IF EXISTS currently_signed_out;
 CREATE VIEW currently_signed_out AS
-SELECT so.item_id AS 'Item ID',time_out AS 'Signed Out', time_in AS 'Signed In', s.first_name AS 'First' , s.last_name AS 'Last' , s.staff_id AS 'Staff ID'
-	FROM sign_out AS so
-    JOIN staff AS s ON so.staff_id = s.staff_id WHERE time_in IS NOT NULL;
+SELECT so.item_id AS 'Item ID', i.item_type AS 'Type', so.time_out AS 'Signed Out', so.time_in AS 'Signed In', s.first_name AS 'First' , s.last_name AS 'Last' , s.staff_id AS 'Staff ID'
+	FROM staff as s
+    JOIN sign_out AS so ON so.staff_id = s.staff_id
+    JOIN items as i on i.item_id = so.item_id
+	WHERE so.time_in IS NOT NULL
+;
+
 SELECT * FROM currently_signed_out;
 
 
@@ -59,12 +69,12 @@ SELECT location_id AS 'Location ID', street_name AS 'Street Name', street_number
 ;
 
 
-
-
 -- add a new location
 INSERT INTO yard_keeper.locations(location_id, street_name, street_number, postal_code, user_id)
 VALUES 
-	('106', 'Easton Rd.', '1100', 'M7B2E8', 1);
+	('106', 'Easton Rd.', '1100', 'M7B2E8', 1)
+;
+
 -- add a new tasks for the new location
 INSERT INTO tasks(task_info, location_id)
 	VALUES
@@ -73,12 +83,15 @@ INSERT INTO tasks(task_info, location_id)
         ('Recut garden edging in front beds along walkway to front door', 105),
         ('Plant 2 trees in front by walkway stairs', 104)
 ;
---  delete location
+
+--  delete location then roll it back 
 START TRANSACTION;
 DELETE FROM yard_keeper.locations WHERE location_id = 101;
 SELECT * FROM locations;
+-- tasks location field will be null 
 SELECT * FROM tasks;
 ROLLBACK;
+
 -- complete a task
 UPDATE yard_keeper.tasks
 SET is_complete = 1, 
@@ -108,6 +121,7 @@ INSERT INTO users(user_name, user_password)
 	VALUES
 		('Property Owners Co.', 'p@ssw0rd')
 ;
+
 SELECT * FROM users;
 
 -- update a locations info to the new user
