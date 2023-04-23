@@ -3,45 +3,67 @@ DROP DATABASE IF EXISTS yard_keeper;
 CREATE DATABASE yard_keeper;
 USE yard_keeper;
 
+
 DROP TABLE IF EXISTS yard_keeper.staff;
-CREATE TABLE yard_keeper.staff(
-	staff_id INT PRIMARY KEY AUTO_INCREMENT, 
+CREATE TABLE yard_keeper.staff (
+	staff_id INT PRIMARY KEY AUTO_INCREMENT,
 	first_name VARCHAR(35) NOT NULL, 
 	last_name VARCHAR(35) NOT NULL, 
 	is_crew_lead BOOLEAN DEFAULT 0,
     is_admin BOOLEAN DEFAULT 0
 );
+ALTER TABLE staff AUTO_INCREMENT = 10;
 
 INSERT INTO yard_keeper.staff(first_name, last_name, is_crew_lead, is_admin)
 VALUES
 	('Jon', 'Doe', '1', '0'),
     ('Debbie', 'Downer', '0', '0'),
     ('Jack', 'Nickles', '0', '0'),
-    ('Toby', 'Jorden', '0', '1')
+    ('Toby', 'Jorden', '0', '1'),
+    ('Herold', 'Walker', '0', '0')
 ;
-DROP TABLE IF EXISTS yard_keeper.sign_out;
-CREATE TABLE yard_keeper.sign_out(
-	item_id INT PRIMARY KEY UNIQUE,
+
+DROP TABLE IF EXISTS yard_keeper.items;
+CREATE TABLE yard_keeper.items(
+	item_id INT PRIMARY KEY AUTO_INCREMENT,
     item_type VARCHAR(48) NOT NULL,
 	time_updated DATETIME,
-    is_out BOOLEAN DEFAULT 0,
-    staff_id INT DEFAULT NULL,
-    CONSTRAINT fk_sign_out_staffid
+    is_out BOOL DEFAULT 0
+);
+ALTER TABLE items AUTO_INCREMENT = 2000;
+
+INSERT INTO yard_keeper.items(item_type, time_updated)
+VALUES
+	('truck', current_timestamp()),
+    ('truck', current_timestamp()),
+    ('truck', current_timestamp()),
+    ('tool_chest', current_timestamp()),
+    ('mower', current_timestamp())
+;
+
+DROP TABLE IF EXISTS yard_keeper.sign_out;
+CREATE TABLE yard_keeper.sign_out(
+	log_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT,
+	time_out DATETIME,
+    time_in DATETIME DEFAULT NULL,
+	staff_id INT DEFAULT NULL,
+	CONSTRAINT fk_sign_out_item_id
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+    CONSTRAINT fk_sign_out_staff_id
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
     ON UPDATE CASCADE
     ON DELETE SET NULL
 );
 
-INSERT INTO yard_keeper.sign_out(item_id, item_type, time_updated)
-VALUES
-	(2010, 'truck', current_timestamp()),
-    (2020, 'truck', current_timestamp()),
-    (2030, 'truck', current_timestamp()),
-    (2040, 'tool_chest', current_timestamp()),
-    (2050, 'mower', current_timestamp())
-;
-
-
+ALTER TABLE sign_out AUTO_INCREMENT = 300;
+INSERT INTO yard_keeper.sign_out(item_id, time_out, time_in, staff_id)
+	VALUES
+		(2001, '2023-03-23 03:24:07', '2023-03-25 03:30:14', 13),
+        (2001, '2023-04-10 03:24:07', '2023-04-15 07:20:14', 12)
+	;
 
 CREATE TABLE yard_keeper.users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -99,9 +121,10 @@ INSERT INTO yard_keeper.tasks(task_info, is_complete, location_id)
 VALUES
 	('Mow the all the back lawn around the pool area', '0', 101),
     ('Cut all hedges in the front facing area', '0', 101),
-    ('Mutch all front flower beds.', '0', 103),
+    ('Mutch all front flower beds', '0', 103),
     ('Mow back lawn', '0', 102),
     ('Multch front beds', '0', 103),
     ('Multch back beds', '0', 103)
 ;
 COMMIT;
+
